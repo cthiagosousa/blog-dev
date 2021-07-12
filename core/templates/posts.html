@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posts</title>
-</head>
-<body>
-    <h1>Posts</h1>
-    {% for post in posts %}
-        <p>{{post.title}}</p>
-    {% endfor %}
-</body>
-</html>
+{% extends "model_page.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1>Postagens</h1>
+        <ul class="list-group">
+            {% for post in posts %}
+                <li class="list-group-item">
+                    <div class="card-body">
+                        <p class="card-subtitle">{{post.created_at}}</p>
+                        <h2 class="card-title">{{post.title}}</h2>
+                        <p class="card-text">{{post.description}}</p>
+                    </div>
+                </li>
+                <hr/>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
