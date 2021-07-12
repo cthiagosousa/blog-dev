@@ -58,3 +58,12 @@ def update_post_submit(request: HttpRequest) -> HttpResponseRedirect:
                 )
     
     return redirect('/')
+
+@login_required(login_url='/')
+def delete_post(request: HttpRequest, post_id: int) -> HttpResponseRedirect:
+    post: Post = Post.objects.get(id=post_id)
+    
+    if post.author == request.user:
+        Post.objects.filter(id=post_id).delete()
+    
+    return redirect('/')
