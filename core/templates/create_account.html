@@ -1,0 +1,22 @@
+{% extends "model_page.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1>Crie sua conta</h1>
+        <form method="POST" action="create-account/submit/"> {% csrf_token %}
+            <label>Nome de usuário</label>
+            <br/>
+            <input type="text" name="username">
+            <br/>
+            <label>Email</label>
+            <br/>
+            <input type="email" name="email">
+            <br/>
+            <label>Senha</label>
+            <br/>
+            <input type="password" name="password">
+            <br/>
+            <button type="submit" >Criar conta</button>
+        </form>
+    </div>
+{% endblock %}

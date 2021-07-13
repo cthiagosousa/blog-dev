@@ -3,7 +3,8 @@
 {% block content %}
     <nav class="nav nav-pills justify-content-end border-bottom p-3">
         {% if is_anonymous %}
-            <a class="nav-link active" href="/login">Entrar</a>
+            <a class="nav-link" href="/login">Entrar</a>
+            <a href="/create-account" class="nav-link active">Criar conta</a>
         {% else %}
             <a class="nav-link" href="/user/admin">{{user}}, acesse sua conta</a>
             <a class="nav-link" href="/logout">Sair</a>

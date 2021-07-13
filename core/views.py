@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirec
 from django.http.request import HttpRequest
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
 from .models import Post
 
 # Post Methods
@@ -73,7 +74,22 @@ def delete_post(request: HttpRequest, post_id: int) -> HttpResponseRedirect:
 
 
 # User Methods
-def login_user(request: HttpRequest) -> HttpResponse:
+def create_account(request: HttpRequest) -> HttpResponse:
+    return render(request, 'create_account.html')
+
+def create_account_submit(request: HttpRequest) -> HttpResponseRedirect:
+    if request.POST:
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        User.objects.create_user(username, email, password)
+        
+        return redirect('/user/admin')
+    
+    return redirect('/')
+
+def login_user(request: HttpRequest) -> HttpResponseRedirect:
     return render(request, 'login.html')
 
 def login_user_submit(request: HttpRequest) -> HttpResponseRedirect:
@@ -90,10 +106,10 @@ def login_user_submit(request: HttpRequest) -> HttpResponseRedirect:
 
 def logout_user(request: HttpRequest) -> HttpResponseRedirect:
     logout(request)
-    
+
     return redirect('/')
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def user_administration(request: HttpRequest) -> HttpResponse:
     posts = Post.objects.filter(author=request.user)
     
