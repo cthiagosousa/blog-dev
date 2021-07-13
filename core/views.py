@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirect
 from django.http.request import HttpRequest
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout, authenticate
 from .models import Post
 
 # Post Methods
@@ -8,10 +9,12 @@ def get_all_post(request: HttpRequest) -> HttpResponse:
     posts = Post.objects.all()
 
     return render(request, 'posts.html', {
+        'user': request.user,
+        'is_anonymous': request.user.is_anonymous,
         'posts': posts
     })
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def create_post(request: HttpRequest) -> HttpResponse:
     return render(request, 'create_post.html')
 
@@ -57,7 +60,7 @@ def update_post_submit(request: HttpRequest) -> HttpResponseRedirect:
                     created_at=created_at,
                 )
     
-    return redirect('/')
+    return redirect('/user/admin')
 
 @login_required(login_url='/')
 def delete_post(request: HttpRequest, post_id: int) -> HttpResponseRedirect:
@@ -66,4 +69,35 @@ def delete_post(request: HttpRequest, post_id: int) -> HttpResponseRedirect:
     if post.author == request.user:
         Post.objects.filter(id=post_id).delete()
     
+    return redirect('/user/admin')
+
+
+# User Methods
+def login_user(request: HttpRequest) -> HttpResponse:
+    return render(request, 'login.html')
+
+def login_user_submit(request: HttpRequest) -> HttpResponseRedirect:
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+    
+    return redirect('/login')
+
+def logout_user(request: HttpRequest) -> HttpResponseRedirect:
+    logout(request)
+    
     return redirect('/')
+
+@login_required(login_url='/')
+def user_administration(request: HttpRequest) -> HttpResponse:
+    posts = Post.objects.filter(author=request.user)
+    
+    return render(request, 'user_administration.html', {
+        'user': request.user,
+        'posts': posts,
+    })
