@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render, HttpResponse, HttpResponseRedirec
 from django.http.request import HttpRequest
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Post
 
@@ -31,7 +32,7 @@ def create_post_submit(request: HttpRequest) -> HttpResponseRedirect:
 
     return redirect('/')
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def update_post(request: HttpRequest, post_id: int) -> HttpResponse:
     post: Post = Post.objects.get(id=post_id)
     
@@ -41,7 +42,7 @@ def update_post(request: HttpRequest, post_id: int) -> HttpResponse:
         'description': post.description,
     })
 
-@login_required(login_url='/')
+@login_required(login_url='/login')
 def update_post_submit(request: HttpRequest) -> HttpResponseRedirect:
     if request.POST:
         post_id = request.GET.get('id')
@@ -75,32 +76,48 @@ def delete_post(request: HttpRequest, post_id: int) -> HttpResponseRedirect:
 
 # User Methods
 def create_account(request: HttpRequest) -> HttpResponse:
-    return render(request, 'create_account.html')
+    if request.user.is_anonymous:
+        return render(request, 'create_account.html')
+    else:
+        return redirect('/user/admin')
 
 def create_account_submit(request: HttpRequest) -> HttpResponseRedirect:
     if request.POST:
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        
-        User.objects.create_user(username, email, password)
-        
-        return redirect('/user/admin')
-    
+
+        if len(username) == 0 or len(email) == 0 or len(password) == 0:
+            messages.error(request, 'Existem campos vazios')
+            
+            return redirect('/create-account')
+        else:
+            User.objects.create_user(username, email, password)
+
     return redirect('/')
 
-def login_user(request: HttpRequest) -> HttpResponseRedirect:
-    return render(request, 'login.html')
+def login_user(request: HttpRequest):
+    if request.user.is_anonymous:
+        return render(request, 'login.html')
+    else:
+        return redirect('/user/admin')
 
 def login_user_submit(request: HttpRequest) -> HttpResponseRedirect:
     if request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
+        
+        if len(username) == 0  or len(password) == 0:
+            messages.error(request, 'Existem campos vazios')
+            return redirect('/login')
+        
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
             login(request, user)
             return redirect('/')
+        else:
+            messages.warning(request, 'Usuário ou senha incorretos')
     
     return redirect('/login')
 

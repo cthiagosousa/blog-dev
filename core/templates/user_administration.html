@@ -1,13 +1,17 @@
 {% extends "model_page.html" %}
 
 {% block content %}
-    <nav class="nav nav-pills justify-content-end border-bottom p-3">
-        {% if is_anonymous %}
-            <a class="nav-link active" href="/">Entrar</a>
-        {% else %}
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/logout" >Sair</a>
-        {% endif %}
+    <nav class="nav nav-pills justify-content-between border-bottom p-3">
+        <h2>Blog DEV</h2>
+
+        <div class="d-flex justify-content-center align-items-center">
+            {% if is_anonymous %}
+                <a class="nav-link active" href="/">Entrar</a>
+            {% else %}
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/logout" >Sair</a>
+            {% endif %}
+        </div>
     </nav>
     <div class="container">
         <h2>Olá, {{user}}</h2>
