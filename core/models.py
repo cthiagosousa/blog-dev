@@ -10,6 +10,3 @@ class Post(models.Model):
     
     def __str__(self) -> str:
         return self.title
-    
-    def get_created_at(self):
-        return self.created_at.strftime('%d/%m/%Y %H:%M Hrs')

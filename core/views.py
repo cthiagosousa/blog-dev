@@ -8,7 +8,7 @@ from .models import Post
 
 # Post Methods
 def get_all_post(request: HttpRequest) -> HttpResponse:
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-created_at')
 
     return render(request, 'posts.html', {
         'user': request.user,
@@ -128,7 +128,7 @@ def logout_user(request: HttpRequest) -> HttpResponseRedirect:
 
 @login_required(login_url='/login')
 def user_administration(request: HttpRequest) -> HttpResponse:
-    posts = Post.objects.filter(author=request.user)
+    posts = Post.objects.filter(author=request.user).order_by('-created_at')
     
     return render(request, 'user_administration.html', {
         'user': request.user,
