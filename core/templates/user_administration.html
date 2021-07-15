@@ -1,23 +1,30 @@
 {% extends "model_page.html" %}
 
 {% block content %}
-    <nav class="nav nav-pills justify-content-between border-bottom p-3">
-        <h2>Blog DEV</h2>
+    <nav class="nav nav-pills justify-content-between border-bottom p-3 bg-dark">
+        <h2 class="text-white" style="font-family: Ubuntu;">Blog DEV</h2>
 
         <div class="d-flex justify-content-center align-items-center">
             {% if is_anonymous %}
-                <a class="nav-link active" href="/">Entrar</a>
+            <a class="nav-link text-warning" href="/login">Entrar</a>
+            <a class="nav-link active bg-warning" href="/create-account">Criar conta</a>
             {% else %}
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/logout" >Sair</a>
+                <a class="nav-link text-warning" href="/">Home</a>
+                <a class="nav-link text-warning" href="/logout" >Sair</a>
             {% endif %}
         </div>
     </nav>
     <div class="container">
-        <h2>Olá, {{user}}</h2>
-    
-        <a href="/post/create">Criar uma nova postagem</a>
-        <h3>Suas postagens</h3>
+        <h2 class="mb-3 mt-3" style="font-family: Ubuntu;">
+            Olá, 
+            <strong class="text-warning">{{user}}</strong>
+        </h2>
+        
+        <a href="/post/create">
+            <button type="button" class="btn btn-warning text-white mb-3 mt-3">Criar uma nova postagem</button>
+        </a>
+
+        <h3 class="mb-3" style="font-family: Ubuntu;">Suas postagens</h3>
     
         <ul class="list-group">
             {% for post in posts %}
@@ -27,8 +34,8 @@
                         <h2 class="card-title">{{post.title}}</h2>
                         <p class="card-text">{{post.description}}</p>
                         <div>
-                            <a href="/post/update/{{post.id}}">Editar postagem</a> |
-                            <a href="/post/delete/{{post.id}}">Excluir</a>
+                            <a class="text-warning" href="/post/update/{{post.id}}">Editar postagem</a> |
+                            <a class="text-warning" href="/post/delete/{{post.id}}">Excluir</a>
                         </div>
                     </div>
                 </li>

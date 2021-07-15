@@ -2,7 +2,8 @@
 
 {% block content %}
     <div class="container d-flex flex-column justify-content-center align-items-center">
-        <h1 class="mb-5">Criar Postagem</h1>
+        <h2 class="mb-3 mt-3" style="font-family: Ubuntu;">Crie sua nova postagem &#128394</h2>
+
         <form method="POST" action="submit/?id={{id}}" style="width: 90vw;"> {% csrf_token %}
             <div class="form-group">
                 <label>Título</label>
@@ -15,8 +16,8 @@
             </div>
 
             <div class="d-flex justify-content-start align-items-center">
-                <button class="btn btn-primary mr-3" type="submit">Criar postagem</button>
-                <a href="/user/admin">Cancelar</a>
+                <button class="btn btn-warning text-white mr-3" type="submit">Criar postagem</button>
+                <a class="text-warning" href="/user/admin">Cancelar</a>
             </div>
         </form>
     </div>
