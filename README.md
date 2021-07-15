@@ -1,4 +1,5 @@
 <h1>Blog DEV &#128240</h1>
+
 <p>Blog com as últimas notícias sobre programação e tecnologia, desenvolvido em Django.</p>
 
 <img src="/home.png" />
@@ -14,4 +15,4 @@
 pip install Django
 ```
 
-<span>Obrigado &#128153</span>
+<p>Obrigado &#128154</p>
