@@ -8,11 +8,10 @@
 
 <h2>Instalação &#128293</h2>
 
-<p>Necessita da instalação do Django</p>
-<p>Versão utilizada no projeto: 3.2.5</p>
+<p>Para instalar basta entrar na pasta onde se encontra o arquivo "requirements.txt" e rodar o comando:</p>
 
 ```sh
-pip install Django
+pip install -r requirements.txt
 ```
 
 <p>Obrigado &#128154</p>
